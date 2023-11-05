@@ -1,0 +1,64 @@
+1) import tensorflow as tf
+from tensorflow import keras
+import matplotlib.pyplot as plt
+import random
+
+
+2) #import dataset and split into train and test 
+mnist = tf.keras.datasets.mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+
+3)x_train = x_train/255
+x_test = x_test/255
+
+
+4)model = keras.Sequential([
+keras.layers.Flatten(input_shape=(28,28)),
+keras.layers.Dense(128, activation="relu"),
+keras.layers.Dense(10, activation="softmax")    
+])
+model.summary()
+
+
+5)model.compile(optimizer="sgd",
+loss="sparse_categorical_crossentropy",
+metrics=["accuracy"])
+
+6)history=model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=11)
+
+
+7)test_loss, test_acc=model.evaluate(x_test, y_test)
+print("Loss=%.3f" %test_loss)
+print("Accuracy=%.3f" %test_acc)
+
+
+8)n=random.randint(0,9999)
+plt.imshow(x_test[n])
+plt.show()
+predicted_value=model.predict(x_test)
+plt.imshow(x_test[n])
+plt.show()
+
+
+9)print('Predicted Value: ', predicted_value[n])
+
+10)plt.plot(history.history["accuracy"])
+plt.plot(history.history["val_accuracy"])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='center right')
+plt.show()
+
+11)plt.plot(history.history["loss"])
+plt.plot(history.history["val_loss"])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='center right')
+plt.show()
+
+
+
+
